@@ -14,7 +14,8 @@ TEMPLATE_DIR = HERE / "template"
 ANSWERS_DIR = HERE / "answers"
 SAMPLES_DIR = HERE / "samples"
 
-yaml = YAML(typ="safe")
+yaml = YAML()
+yaml.indent(sequence=4, offset=2)
 
 
 @click.group()
