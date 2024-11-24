@@ -4,8 +4,7 @@ import os
 import subprocess
 from collections.abc import Sequence
 from pathlib import Path
-from typing import TYPE_CHECKING
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import click
 
@@ -26,7 +25,9 @@ def test(args: list[str]):
 
 @main.command("cov")
 @click.option("--no-test", is_flag=True, help="Skip running tests with coverage")
-@click.option("--old-coverage-xml", default=None, type=str, help="Path to target coverage.xml.")
+@click.option(
+    "--old-coverage-xml", default=None, type=str, help="Path to target coverage.xml."
+)
 def cov(no_test: bool, old_coverage_xml: str | None):
     """Run the test suite with coverage."""
     if not no_test:
@@ -62,7 +63,9 @@ def cov(no_test: bool, old_coverage_xml: str | None):
 @click.option("--no-md-style", is_flag=True, help="Skip style check Markdown files.")
 @click.option("--no-py-style", is_flag=True, help="Skip style check Python files.")
 @click.option("--no-py-types", is_flag=True, help="Skip type check Python files.")
-@click.option("--no-uv-locked", is_flag=True, help="Skip check that the UV lock file is synced")
+@click.option(
+    "--no-uv-locked", is_flag=True, help="Skip check that the UV lock file is synced"
+)
 @click.option("--no-yml-style", is_flag=True, help="Skip style check YAML files.")
 def lint(
     check: bool,
@@ -84,7 +87,15 @@ def lint(
             run(["ruff", "check", "--fix"])
     if not no_md_style:
         if check:
-            run(["mdformat", "--ignore-missing-references", "--check", "README.md", "docs"])
+            run(
+                [
+                    "mdformat",
+                    "--ignore-missing-references",
+                    "--check",
+                    "README.md",
+                    "docs",
+                ]
+            )
             doc_cmd(["ruff", "format", "--check"], no_pad=True)
             doc_cmd(["ruff", "check"], no_pad=True)
         else:
@@ -134,8 +145,10 @@ if TYPE_CHECKING:
 else:
 
     def run(*args, **kwargs):
+        cmd, *args = args
+        cmd = tuple(map(str, cmd))
         kwargs.setdefault("check", True)
-        click.echo(click.style(" ".join(args[0]), bold=True))
+        click.echo(click.style(" ".join(cmd), bold=True))
         try:
             return subprocess.run(*args, **kwargs)
         except subprocess.CalledProcessError as e:
