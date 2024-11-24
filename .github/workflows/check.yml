@@ -10,9 +10,6 @@ env:
 jobs:
   samples:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        subdir: ["basic"]
     steps:
-      - name: Check sample
-        uses: ./samples/${{ matrix.python-version }}/.github/workflows/check.yml
+      - name: Check basic
+        uses: ./samples/basic/.github/workflows/check.yml
