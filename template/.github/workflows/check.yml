@@ -50,7 +50,7 @@ jobs:
         with:
           branch: ${{ github.event.pull_request.base.ref }}
           name: coverage-xml
-          path: old-coverage
+          path: ${{ github.workspace }}/old-coverage
       - name: UV cache
         uses: actions/cache@v4
         with:
