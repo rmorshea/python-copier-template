@@ -1,3 +1,6 @@
+# Ignore copier answers file
+.copier-answers.yml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
