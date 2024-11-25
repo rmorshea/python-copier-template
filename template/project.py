@@ -25,9 +25,7 @@ def test(args: list[str]):
 
 @main.command("cov")
 @click.option("--no-test", is_flag=True, help="Skip running tests with coverage")
-@click.option(
-    "--old-coverage-xml", default=None, type=str, help="Path to target coverage.xml."
-)
+@click.option("--old-coverage-xml", default=None, type=str, help="Path to target coverage.xml.")
 def cov(no_test: bool, old_coverage_xml: str | None):
     """Run the test suite with coverage."""
     if not no_test:
