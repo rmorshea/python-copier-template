@@ -2,7 +2,7 @@
 
 A template for Python projects built using [Copier](https://github.com/copier-org/copier).
 
-# Getting Started
+# Generate a Project
 
 Generate a project from this template using Copier:
 
@@ -13,6 +13,29 @@ pipx copier copy https://github.com/rmorshea/python-copier-template path/to/proj
 # with uvx
 uvx copier copy https://github.com/rmorshea/python-copier-template path/to/project
 ```
+
+## What's in the Box?
+
+
+### Project Management
+
+Projects generated from this template use [`uv`](https://github.com/astral-sh/uv) as a
+package and project manager. Common developer commands are located in a `project.py`
+file at project's root. To see a full list of commands run:
+
+```bash
+uv run project.py
+```
+
+### Continuous Integration
+
+This template supplies a set of GitHub workflows for running tests, linting, deploying
+documentation and making releases. These workflows are located in the `.github/workflows`.
+Each pull request will trigger the `check.yml` workflow, which runs the test suite
+(with coverage), linting, and checks for documentation build errors. Versioning is
+not automated - you will still need to bump the version found in `pyproject.toml` -
+however releases are whenever using
+[GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#creating-a-release).
 
 # Contributing
 
