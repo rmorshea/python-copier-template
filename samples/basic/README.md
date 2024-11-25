@@ -1,7 +1,7 @@
-# {{ project_title }}
+# My Project
 
-\[!\[PyPI - Version\](https://img.shields.io/pypi/v/{{ python_package_name }}.svg)\](https://pypi.org/project/{{ python_package_name }})
-\[!\[PyPI - Python Version\](https://img.shields.io/pypi/pyversions/{{ python_package_name }}.svg)\](https://pypi.org/project/{{ python_package_name }})
+[![PyPI - Version](https://img.shields.io/pypi/v/my_project.svg)](https://pypi.org/project/my_project)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/my_project.svg)](https://pypi.org/project/my_project)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-{{ project_description }}
+My project is awesome.
