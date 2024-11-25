@@ -28,4 +28,5 @@ project and "running" them. This is a bit hacky because there's no easy way to
 [run workflows in subdirectories](https://github.com/orgs/community/discussions/18055).
 As a result, what we actually do is generate a facsimile of the original workflow file
 by modifying it and injecting `working-directory: path/to/sample` in each step of each
-job.
+job and replacing any instance of `${{ github.workspace }}` with the path to the sample
+project.
