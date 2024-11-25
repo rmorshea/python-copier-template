@@ -1,0 +1,28 @@
+name: check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+env:
+  latest-python-version: 3.13
+jobs:
+  template-gen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: UV cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key:
+            ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ hashFiles('pyproject.toml')
+            }}
+      - name: Install UV
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Install Python
+        run: uv python install ${{ matrix.python-version }}
+      - name: Generate project
+        run: uv run project.py gen
+      - name: Check no git diff
+        run: git diff --exit-code

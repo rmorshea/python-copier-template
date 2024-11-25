@@ -29,8 +29,7 @@ def main():
 def gen(check: bool, fresh: bool, diff: bool):
     """Generate sample projects."""
     for answers_file in ANSWERS_DIR.glob("*.yml"):
-        sample_name = answers_file.stem
-        output_dir = SAMPLES_DIR / sample_name
+        output_dir = SAMPLES_DIR / answers_file.stem
         shutil.rmtree(output_dir, ignore_errors=True)
         run(
             [
@@ -48,7 +47,9 @@ def gen(check: bool, fresh: bool, diff: bool):
 
         # copy workflow files to .github/workflows
         sample_check_workflow_yml = output_dir / ".github" / "workflows" / "check.yml"
-        root_check_yml = HERE / ".github" / "workflows" / f"{sample_name}-check.yml"
+        root_check_yml = (
+            HERE / ".github" / "workflows" / f"check-{output_dir.name}-sample.yml"
+        )
         check_workflow_doc = yaml.load(sample_check_workflow_yml)
         update_check_workflow(output_dir, check_workflow_doc)
         buffer = BytesIO()
@@ -59,7 +60,7 @@ def gen(check: bool, fresh: bool, diff: bool):
 
 
 def update_check_workflow(work_dir: Path, doc: Any) -> None:
-    doc["name"] = f"{work_dir.name}-{doc['name']}"
+    doc["name"] = f"{doc['name']}-{work_dir.name}-sample"
     for job in doc["jobs"].values():
         for step in job["steps"]:
             if "run" in step:
