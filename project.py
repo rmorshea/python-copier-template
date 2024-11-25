@@ -41,9 +41,9 @@ def gen(check: bool, fresh: bool, diff: bool):
                 output_dir,
             ]
         )
-        if check:
-            run(["uv", "run", "project.py", "lint"], cwd=output_dir)
-            run(["uv", "run", "project.py", "test"], cwd=output_dir)
+
+        run(["uv", "run", "project.py", "lint"], cwd=output_dir)
+        run(["uv", "run", "project.py", "test"], cwd=output_dir)
 
         # copy workflow files to .github/workflows
         sample_check_workflow_yml = output_dir / ".github" / "workflows" / "check.yml"
