@@ -1,9 +1,11 @@
 # ruff: noqa: S607,S603,S404,FBT001,D401,D103
 
+import re
 import shutil
 import subprocess
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable, TypeAlias
 
 import click
 from ruamel.yaml import YAML
@@ -15,6 +17,8 @@ ANSWERS_DIR = HERE / "answers"
 SAMPLES_DIR = HERE / "samples"
 
 yaml = YAML()
+
+GITHUB_WORKSPACE_PATTERN = re.compile(r"\$\{\{ *github\.workspace *\}\}")
 
 
 @click.group()
@@ -50,21 +54,44 @@ def gen(check: bool, fresh: bool, diff: bool):
         root_check_yml = (
             HERE / ".github" / "workflows" / f"check-{output_dir.name}-sample.yml"
         )
-        check_workflow_doc = yaml.load(sample_check_workflow_yml)
-        update_check_workflow(output_dir, check_workflow_doc)
+        doc = add_work_dir_to_workflow(output_dir, yaml.load(sample_check_workflow_yml))
         buffer = BytesIO()
-        yaml.dump(check_workflow_doc, buffer)
+        yaml.dump(doc, buffer)
         root_check_yml.write_bytes(buffer.getvalue())
     if diff:
         run(["git", "diff", "--exit-code", "--", "samples"])
 
 
-def update_check_workflow(work_dir: Path, doc: Any) -> None:
+def add_work_dir_to_workflow(work_dir: Path, doc: Any) -> Any:
+    cwd_str = str(work_dir.relative_to(HERE))
     doc["name"] = f"{doc['name']}-{work_dir.name}-sample"
     for job in doc["jobs"].values():
         for step in job["steps"]:
             if "run" in step:
-                step["working-directory"] = str(work_dir.relative_to(HERE))
+                step["working-directory"] = cwd_str
+
+    def replace_github_workspace(value: Any, recurse: Recurse) -> Any:
+        if isinstance(value, str):
+            with_wd = f"${{ github.workspace }}/{cwd_str}"
+            return GITHUB_WORKSPACE_PATTERN.sub(with_wd, value)
+        return recurse(value, replace_github_workspace)
+
+    return recurse_doc(doc, replace_github_workspace)
+
+
+Recurse: TypeAlias = "Callable[[Any, Recurse], Any]"
+
+
+def recurse_doc(doc: Any, visit: Recurse) -> Any:
+    def drill(item: Any, visit: Recurse) -> Any:
+        if isinstance(item, Mapping):
+            return {k: visit(v, drill) for k, v in item.items()}
+        elif isinstance(item, Sequence):
+            return [visit(v, drill) for v in item]
+        else:
+            return item
+
+    return visit(doc, drill)
 
 
 if TYPE_CHECKING:
