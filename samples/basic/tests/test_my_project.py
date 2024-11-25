@@ -1,2 +1,5 @@
+import my_project
+
+
 def test_my_project():
-    import my_project
+    my_project
