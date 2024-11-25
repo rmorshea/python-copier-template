@@ -63,9 +63,7 @@ def cov(no_test: bool, old_coverage_xml: str | None):
 @click.option("--no-md-style", is_flag=True, help="Skip style check Markdown files.")
 @click.option("--no-py-style", is_flag=True, help="Skip style check Python files.")
 @click.option("--no-py-types", is_flag=True, help="Skip type check Python files.")
-@click.option(
-    "--no-uv-locked", is_flag=True, help="Skip check that the UV lock file is synced"
-)
+@click.option("--no-uv-locked", is_flag=True, help="Skip check that the UV lock file is synced")
 @click.option("--no-yml-style", is_flag=True, help="Skip style check YAML files.")
 def lint(
     check: bool,
