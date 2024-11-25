@@ -1,3 +1,5 @@
+_subdirectory: template
+
 project_title:
   type: str
   help: "A title for the project"

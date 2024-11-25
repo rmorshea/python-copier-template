@@ -12,7 +12,6 @@ from ruamel.yaml import YAML
 from ruamel.yaml.compat import BytesIO
 
 HERE = Path(__file__).parent
-TEMPLATE_DIR = HERE / "template"
 ANSWERS_DIR = HERE / "answers"
 SAMPLES_DIR = HERE / "samples"
 
@@ -41,7 +40,7 @@ def gen(check: bool, fresh: bool, diff: bool):
                 "copy",
                 f"--data-file={answers_file}",
                 "--overwrite",
-                TEMPLATE_DIR,
+                HERE,
                 output_dir,
             ]
         )
