@@ -47,7 +47,7 @@ def gen(check: bool, fresh: bool, diff: bool):
         )
 
         run(["uv", "run", "project.py", "lint"], cwd=output_dir)
-        run(["uv", "run", "project.py", "test"], cwd=output_dir)
+        run(["uv", "run", "project.py", "cov"], cwd=output_dir)
 
         # copy workflow files to .github/workflows
         sample_check_workflow_yml = output_dir / ".github" / "workflows" / "check.yml"
@@ -72,7 +72,7 @@ def add_work_dir_to_workflow(work_dir: Path, doc: Any) -> Any:
 
     def replace_github_workspace(value: Any, recurse: Recurse) -> Any:
         if isinstance(value, str):
-            with_wd = f"${{ github.workspace }}/{cwd_str}"
+            with_wd = "${{ github.workspace }}/" + cwd_str
             return GITHUB_WORKSPACE_PATTERN.sub(with_wd, value)
         return recurse(value, replace_github_workspace)
 
