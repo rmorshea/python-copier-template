@@ -57,6 +57,10 @@ def gen(check: bool, fresh: bool, diff: bool):
         buffer = BytesIO()
         yaml.dump(doc, buffer)
         root_check_yml.write_bytes(buffer.getvalue())
+
+        # Require .copier-answers.yml to exist, but delete it since it contains
+        # the commit used to generate the sample which always creates a diff.
+        (output_dir / ".copier-answers.yml").unlink(missing_ok=False)
     if diff:
         run(["git", "diff", "--exit-code", "--", "samples"])
 
