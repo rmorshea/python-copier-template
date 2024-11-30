@@ -9,7 +9,9 @@ Generate a project from this template using Copier:
 ```bash
 # with pipx
 pipx copier copy https://github.com/rmorshea/python-copier-template path/to/project
+```
 
+```bash
 # with uvx
 uvx copier copy https://github.com/rmorshea/python-copier-template path/to/project
 ```
