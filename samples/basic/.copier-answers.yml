@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 5c59ee5
+_src_path: /Users/ryan/Repositories/rmorshea/python-copier-template
+author_email: john@example.com
+author_name: John Doe
+project_description: My project is awesome.
+project_title: My Project
+python_package_name: my_project
+python_version_range: '>=3.11'
+repo_url: https://example.com/jondoe/my-project
