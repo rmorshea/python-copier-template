@@ -6,6 +6,7 @@ docs_dir: src
 repo_url: https://example.com/jondoe/my-project
 nav:
   - Home: index.md
+  - Contributing: contributing.md
 theme:
   name: material
   icon:
