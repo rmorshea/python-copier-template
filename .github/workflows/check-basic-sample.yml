@@ -54,6 +54,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: coverage-xml
+        path: ${{ github.workspace }}/samples/basic
     - name: Download old coverage
       uses: dawidd6/action-download-artifact@v6
       with:
