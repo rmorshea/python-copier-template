@@ -74,6 +74,12 @@ jobs:
     - name: Install Python
       run: uv python install ${{ matrix.python-version }}
       working-directory: samples/basic
+    - name: Show coverage
+      run: ls
+      working-directory: samples/basic
+    - name: Show coverage
+      run: cat coverage.xml
+      working-directory: samples/basic
     - name: Check coverage
       run: uv run project.py cov --no-test --old-coverage-xml=${{ github.workspace
         }}/samples/basic/old-coverage/coverage.xml
