@@ -1,3 +1,3 @@
-# {{ project_title }}
+# My Project
 
-{{ project_description }}
+My project is awesome.
