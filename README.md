@@ -22,11 +22,11 @@ uvx copier copy https://github.com/rmorshea/python-copier-template path/to/proje
 ### Project Management
 
 Projects generated from this template use [`uv`](https://github.com/astral-sh/uv) as a
-package and project manager. Common developer commands are located in a `project.py`
-file at project's root. To see a full list of commands run:
+package and project manager. Common developer commands are located in a `dev.py` file at
+project's root. To see a full list of commands run:
 
 ```bash
-uv run project.py
+uv run dev.py
 ```
 
 ### Continuous Integration
@@ -42,9 +42,9 @@ however releases are whenever using
 # Contributing
 
 This project uses [`uv`](https://github.com/astral-sh/uv) in combination with dev
-scripts contained in `project.py`. To see available commands, run `uv run project.py`.
+scripts contained in `dev.py`. To see available commands, run `uv run dev.py`.
 
-Make some changes to the `template/` and then run `uv run project.py gen` to update the
+Make some changes to the `template/` and then run `uv run dev.py gen` to update the
 generated sample project(s). Sample projects are generated based on the answers files
 found under the `answers/` directory.
 

@@ -28,7 +28,7 @@ jobs:
           enable-cache: true
           cache-dependency-glob: '**/pyproject.toml'
       - name: Run tests
-        run: uv run project.py cov
+        run: uv run dev.py cov
       - name: Upload coverage
         if: matrix.python-version == env.latest-python-version
         uses: actions/upload-artifact@v4
@@ -66,7 +66,7 @@ jobs:
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
       - name: Check coverage
-        run: uv run project.py cov --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml
+        run: uv run dev.py cov --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml
   py-lint:
     runs-on: ubuntu-latest
     steps:
@@ -81,7 +81,7 @@ jobs:
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
       - name: Check lint
-        run: uv run project.py lint --check
+        run: uv run dev.py lint --check
   py-build:
     runs-on: ubuntu-latest
     steps:
@@ -111,4 +111,4 @@ jobs:
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
       - name: Build docs
-        run: uv run project.py docs build
+        run: uv run dev.py docs build

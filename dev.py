@@ -11,7 +11,8 @@ import click
 from ruamel.yaml import YAML
 from ruamel.yaml.compat import BytesIO
 
-HERE = Path(__file__).parent
+FILE = Path(__file__)
+HERE = FILE.parent
 ANSWERS_DIR = HERE / "answers"
 SAMPLES_DIR = HERE / "samples"
 
@@ -45,8 +46,8 @@ def gen(check: bool, fresh: bool, diff: bool):
             ]
         )
 
-        run(["uv", "run", "project.py", "lint"], cwd=output_dir)
-        run(["uv", "run", "project.py", "cov"], cwd=output_dir)
+        run(["uv", "run", FILE.name, "lint"], cwd=output_dir)
+        run(["uv", "run", FILE.name, "cov"], cwd=output_dir)
 
         # copy workflow files to .github/workflows
         sample_check_workflow_yml = output_dir / ".github" / "workflows" / "check.yml"
