@@ -160,8 +160,8 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "raise AssertionError",
     "raise NotImplementedError",
-    'class .*\bProtocol\b.*\):',
     'if __name__ == .__main__.:',
+    '\.\.\.\n($|\s*#.*)',
 ]
 show_missing = true
 skip_covered = true
