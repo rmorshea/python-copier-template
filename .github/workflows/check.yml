@@ -23,6 +23,6 @@ jobs:
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
       - name: Generate project
-        run: uv run project.py gen
+        run: uv run dev.py gen
       - name: Check no git diff
         run: git diff --exit-code
