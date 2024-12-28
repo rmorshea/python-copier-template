@@ -26,11 +26,12 @@ jobs:
         key: ${{ runner.os }}-${{ matrix.python-version }}-uv-${{ hashFiles('pyproject.toml')
           }}
     - name: Install UV
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      working-directory: samples/basic
-    - name: Install Python
-      run: uv python install ${{ matrix.python-version }}
-      working-directory: samples/basic
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: latest
+        python-version: ${{ matrix.python-version }}
+        enable-cache: true
+        cache-dependency-glob: '**/pyproject.toml'
     - name: Run tests
       run: uv run project.py cov
       working-directory: samples/basic
