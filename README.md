@@ -36,8 +36,9 @@ documentation and making releases. These workflows are located in the `.github/w
 Each pull request will trigger the `check.yml` workflow, which runs the test suite
 (with coverage), linting, and checks for documentation build errors. Versioning is
 not automated - you will still need to bump the version found in `pyproject.toml` -
-however releases are whenever using
-[GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#creating-a-release).
+however that the current version will be published whenever a
+[GitHub Release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#creating-a-release)
+is created.
 
 # Contributing
 
