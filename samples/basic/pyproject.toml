@@ -30,7 +30,11 @@ dev = [
     { include-group = "lint" },
     { include-group = "test" },
 ]
-util = ["click==8.1.7", "ipykernel==6.29.5", "copier==9.4.1"]
+util = [
+    "click==8.1.7",
+    "ipykernel==6.29.5",
+    "copier==9.4.1",
+]
 docs = [
     { include-group = "test" },
     "mkdocs-gen-files==0.5.0",

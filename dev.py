@@ -41,6 +41,7 @@ def gen(check: bool, fresh: bool, diff: bool):
                 "copy",
                 f"--data-file={answers_file}",
                 "--overwrite",
+                "--vcs-ref=HEAD",
                 HERE,
                 output_dir,
             ]
