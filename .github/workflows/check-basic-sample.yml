@@ -41,7 +41,8 @@ jobs:
       with:
         name: coverage-xml
         include-hidden-files: true
-        path: ${{ github.workspace }}/samples/basic/coverage.xml
+        path: "${{ github.workspace }}/samples/basic/coverage.xml\n${{ github.workspace
+          }}/samples/basic/.coverage\n"
         if-no-files-found: error
   py-coverage:
     runs-on: ubuntu-latest
@@ -78,6 +79,9 @@ jobs:
       working-directory: samples/basic
     - name: Check coverage
       run: uv run dev.py cov --no-test --old-coverage-xml=${{ github.workspace }}/samples/basic/old-coverage/coverage.xml
+      working-directory: samples/basic
+    - name: Coverage summary
+      run: uv run coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
       working-directory: samples/basic
   py-lint:
     runs-on: ubuntu-latest
