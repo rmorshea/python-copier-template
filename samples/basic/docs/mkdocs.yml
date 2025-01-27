@@ -38,6 +38,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
+          import: [https://docs.python.org/3/objects.inv]
           paths: [src]
           options:
             docstring_options:
