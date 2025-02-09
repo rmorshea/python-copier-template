@@ -205,6 +205,7 @@ def doc_cmd(cmd: Sequence[str], *, no_pad: bool = False):
                 None,
                 [
                     "doccmd",
+                    "-v",
                     "--language=python",
                     "--no-pad-file" if no_pad else "",
                     "--command",
