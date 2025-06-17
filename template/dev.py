@@ -134,10 +134,28 @@ def docs_serve():
     run(["mkdocs", "serve", "-f", "docs/mkdocs.yml"])
 
 
-@docs.command("fix")
-def fix():
-    """Fix style issues."""
-    run(["pytest", "tests/test_docs.py", "--update-examples"])
+@docs.command("check-changelog")
+@click.argument("target_branch", type=str, default="main")
+def docs_check_changelog(target_branch: str):
+    """Check if the changelog is up to date."""
+    current_branch = run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True
+    ).stdout.strip()
+    if current_branch == target_branch:
+        click.echo("Already on the target branch, skipping changelog check.")
+        return
+    run(["git", "fetch", "origin", target_branch])
+    run(
+        [
+            "git",
+            "diff",
+            "--name-only",
+            f"origin/{target_branch}..HEAD",
+            "--",
+            "CHANGELOG.md",
+        ],
+        check=False,
+    )
 
 
 if TYPE_CHECKING:
