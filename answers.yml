@@ -1,7 +1,0 @@
-project_title: "My Project"
-project_description: "My project is awesome."
-repo_url: "https://example.com/jondoe/my-project"
-author_name: "John Doe"
-author_email: "john@example.com"
-python_package_name: "my_project"
-python_version_range: ">=3.11"

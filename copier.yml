@@ -1,33 +1,39 @@
 _subdirectory: template
 
 project_title:
-  type: str
-  help: "A title for the project"
-  placeholder: "My Project"
+    type: str
+    help: "A title for the project"
+    placeholder: "My Project"
 project_description:
-  type: str
-  help: "A description for the project"
-  placeholder: "My project is awesome."
+    type: str
+    help: "A description for the project"
+    placeholder: "My project is awesome."
 repo_url:
-  type: str
-  help: "The URL of the repository"
-  placeholder: "https://github.com/jondoe/my-project"
+    type: str
+    help: "The URL of the repository"
+    placeholder: "https://github.com/jondoe/my-project"
 author_name:
-  type: str
-  help: "The name of the author"
-  placeholder: "John Doe"
+    type: str
+    help: "The name of the author"
+    placeholder: "John Doe"
 author_email:
-  type: str
-  help: "The email of the author"
-  placeholder: "john@example.com"
+    type: str
+    help: "The email of the author"
+    placeholder: "john@example.com"
 python_package_name:
-  type: str
-  help: "The name of the Python package"
-  placeholder: "my_project"
-  default: "{{ project_title.lower().replace(' ', '_') }}"
-  validator: >-
-    {% if not python_package_name.isidentifier() %}"Invalid Python package name"{% endif %}
+    type: str
+    help: "The name of the Python package"
+    placeholder: "my_project"
+    default: "{{ project_title.lower().replace(' ', '_') }}"
+    validator: >-
+        {% if not python_package_name.isidentifier() %}"Invalid Python package name"{%
+        endif %}
 python_version_range:
-  type: str
-  help: "The versions of python to support"
-  default: ">=3.11"
+    type: str
+    help: "The versions of python to support"
+    default: ">=3.11"
+this:
+    type: yaml
+    help: "Used to test the template itself"
+    when: false
+    default: false
