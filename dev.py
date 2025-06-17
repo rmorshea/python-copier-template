@@ -35,6 +35,7 @@ def gen(check: bool, fresh: bool, diff: bool):
     for answers_file in ANSWERS_DIR.glob("*.yml"):
         output_dir = SAMPLES_DIR / answers_file.stem
         shutil.rmtree(output_dir, ignore_errors=True)
+        output_dir.mkdir(parents=True, exist_ok=True)
         run(
             [
                 "copier",

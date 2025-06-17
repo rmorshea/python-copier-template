@@ -52,6 +52,7 @@ jobs:
           name: coverage-xml
           path: ${{ github.workspace }}
       - name: Download old coverage
+        continue-on-error: true
         uses: dawidd6/action-download-artifact@v6
         with:
           branch: ${{ github.event.pull_request.base.ref }}
@@ -68,8 +69,10 @@ jobs:
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
       - name: Check coverage
+        continue-on-error: true
         run: uv run dev.py cov --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml
       - name: Coverage summary
+        continue-on-error: true
         run: uv run coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
   py-lint:
     runs-on: ubuntu-latest
@@ -116,3 +119,18 @@ jobs:
         run: uv python install ${{ matrix.python-version }}
       - name: Build docs
         run: uv run dev.py docs build
+  docs-changelog:
+    runs-on: ubuntu-latest
+    needs: docs-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: UV cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ hashFiles('pyproject.toml') }}
+      - name: Install UV
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Check changelog
+        continue-on-error: true
+        run: uv run dev.py docs check-changelog

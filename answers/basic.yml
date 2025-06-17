@@ -5,3 +5,5 @@ author_name: "John Doe"
 author_email: "john@example.com"
 python_package_name: "my_project"
 python_version_range: ">=3.11"
+this:
+    testing: true
