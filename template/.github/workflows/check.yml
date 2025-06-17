@@ -128,5 +128,5 @@ jobs:
           key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ hashFiles('pyproject.toml') }}
       - name: Install UV
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - name: Build docs
+      - name: Check changelog
         run: uv run dev.py docs check-changelog
