@@ -5,7 +5,6 @@ import subprocess
 from collections.abc import Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING
-from typing import Literal
 
 import click
 
@@ -171,49 +170,6 @@ else:
         except FileNotFoundError as e:
             msg = f"File not found {e}"
             raise click.ClickException(msg) from None
-
-
-def report(
-    kind: Literal["notice", "warning", "error"],
-    /,
-    *,
-    title: str = "",
-    message: str = "",
-    file: str | None = None,
-    line: int | None = None,
-    end_line: int | None = None,
-    col: int | None = None,
-    end_col: int | None = None,
-):
-    if not IN_CI:
-        file_parts = []
-        if file:
-            file_parts.append(f"{file}")
-            if line:
-                file_parts.append(f":{line}")
-                if end_line:
-                    file_parts.append(f"-{end_line}")
-            if col:
-                file_parts.append(f":{col}")
-                if end_col:
-                    file_parts.append(f"-{end_col}")
-        file_info = "".join(file_parts)
-        click.echo(" - ".join(filter(None, [kind.upper(), file_info, title, message])))
-    else:
-        file_parts = []
-        if title or message:
-            file_parts.append(f"{title}::{message}")
-        if file:
-            file_parts.append(f"file={file}")
-            if line:
-                file_parts.append(f"line={line}")
-                if end_line:
-                    file_parts.append(f"endLine={end_line}")
-            if col:
-                file_parts.append(f"col={col}")
-                if end_col:
-                    file_parts.append(f"endCol={end_col}")
-        click.echo(f"::{kind} {','.join(file_parts)}")
 
 
 def doc_cmd(cmd: Sequence[str], *, no_pad: bool = False):
