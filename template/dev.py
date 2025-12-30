@@ -63,6 +63,7 @@ def cov(no_test: bool, old_coverage_xml: str | None):
 @click.option("--no-md-style", is_flag=True, help="Skip style check Markdown files.")
 @click.option("--no-py-style", is_flag=True, help="Skip style check Python files.")
 @click.option("--no-py-types", is_flag=True, help="Skip type check Python files.")
+@click.option("--no-py-deps", is_flag=True, help="Skip checking dependency issues.")
 @click.option(
     "--no-uv-locked", is_flag=True, help="Skip check that the UV lock file is synced"
 )
@@ -74,6 +75,7 @@ def lint(
     no_py_types: bool,
     no_uv_locked: bool,
     no_yml_style: bool,
+    no_py_deps: bool,
 ):
     """Linting commands."""
     if not no_uv_locked:
@@ -109,6 +111,8 @@ def lint(
             run(["yamlfix", "docs", ".github"])
     if not no_py_types:
         run(["pyright"])
+    if not no_py_deps:
+        run(["deptry", "src"])
 
 
 @main.group("docs")
