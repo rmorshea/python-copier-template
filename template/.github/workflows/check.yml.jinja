@@ -73,7 +73,7 @@ jobs:
       - name: Install UV
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
-        run: uv python install {{ "${{ matrix.python-version }}" }}
+        run: uv python install {{ "${{ env.latest-python-version }}" }}
       - name: Install mise
         uses: jdx/mise-action@v3
         with:
@@ -100,7 +100,7 @@ jobs:
       - name: Install UV
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
-        run: uv python install {{ "${{ matrix.python-version }}" }}
+        run: uv python install {{ "${{ env.latest-python-version }}" }}
       - name: Install mise
         uses: jdx/mise-action@v3
         with:
@@ -119,7 +119,7 @@ jobs:
       - name: Install UV
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
-        run: uv python install {{ "${{ matrix.python-version }}" }}
+        run: uv python install {{ "${{ env.latest-python-version }}" }}
       - name: Check lint
         run: uv build
   docs-build:
@@ -134,7 +134,7 @@ jobs:
       - name: Install UV
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
-        run: uv python install {{ "${{ matrix.python-version }}" }}
+        run: uv python install {{ "${{ env.latest-python-version }}" }}
       - name: Install mise
         uses: jdx/mise-action@v3
         with:

@@ -79,7 +79,7 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
       working-directory: samples/basic
     - name: Install Python
-      run: uv python install ${{ matrix.python-version }}
+      run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v2
@@ -106,7 +106,7 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
       working-directory: samples/basic
     - name: Install Python
-      run: uv python install ${{ matrix.python-version }}
+      run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v2
@@ -127,7 +127,7 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
       working-directory: samples/basic
     - name: Install Python
-      run: uv python install ${{ matrix.python-version }}
+      run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Check lint
       run: uv build
@@ -146,7 +146,7 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
       working-directory: samples/basic
     - name: Install Python
-      run: uv python install ${{ matrix.python-version }}
+      run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v2

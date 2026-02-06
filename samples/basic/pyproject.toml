@@ -56,6 +56,7 @@ lint = [
     "ruff==0.7.3",
     "yamlfix==1.17.0",
     "doccmd==2024.11.14",
+    "deptry==0.24.0",
 ]
 test = [
     "coverage[toml]==7.6.1",
