@@ -117,7 +117,7 @@ jobs:
       with:
         version: 2026.2.4
     - name: Check lint
-      run: mise run lint --check
+      run: mise run lint --check --no-uv-locked
       working-directory: samples/basic
   py-build:
     runs-on: ubuntu-latest

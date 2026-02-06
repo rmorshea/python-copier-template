@@ -106,7 +106,7 @@ jobs:
         with:
           version: 2026.2.4
       - name: Check lint
-        run: mise run lint --check
+        run: mise run lint --check {% if this.testing %}--no-uv-locked{% endif %}
   py-build:
     runs-on: ubuntu-latest
     steps:
