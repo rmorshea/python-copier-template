@@ -27,8 +27,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
           cache-dependency-glob: '**/pyproject.toml'
+      - name: Install mise
+        uses: jdx/mise-action@v2
       - name: Run tests
-        run: uv run dev.py cov
+        run: mise run cov
       - name: Upload coverage
         if: matrix.python-version == env.latest-python-version
         uses: actions/upload-artifact@v4
@@ -68,9 +70,11 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
+      - name: Install mise
+        uses: jdx/mise-action@v2
       - name: Check coverage
         continue-on-error: true
-        run: uv run dev.py cov --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml
+        run: mise run cov --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml
       - name: Coverage summary
         continue-on-error: true
         run: uv run coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
@@ -87,8 +91,10 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
+      - name: Install mise
+        uses: jdx/mise-action@v2
       - name: Check lint
-        run: uv run dev.py lint --check
+        run: mise run lint --check
   py-build:
     runs-on: ubuntu-latest
     steps:
@@ -117,8 +123,10 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Install Python
         run: uv python install ${{ matrix.python-version }}
+      - name: Install mise
+        uses: jdx/mise-action@v2
       - name: Build docs
-        run: uv run dev.py docs build
+        run: mise run docs:build
   docs-changelog:
     runs-on: ubuntu-latest
     needs: docs-build
@@ -131,6 +139,8 @@ jobs:
           key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ hashFiles('pyproject.toml') }}
       - name: Install UV
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Install mise
+        uses: jdx/mise-action@v2
       - name: Check changelog
         continue-on-error: true
-        run: uv run dev.py docs check-changelog
+        run: mise run docs:check-changelog
