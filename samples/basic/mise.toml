@@ -1,6 +1,10 @@
 [tools]
 uv = "0.10.0"
 
+[hooks]
+postinstall = "uv lock"
+
+
 [tasks.test]
 description = "Run the test suite"
 usage = 'arg "[args]" help="Arguments to pass to pytest" var=#true'
