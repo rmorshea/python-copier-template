@@ -19,19 +19,6 @@ jobs:
         - '3.13'
     steps:
     - uses: actions/checkout@v4
-    - name: UV cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/uv
-        key: ${{ runner.os }}-${{ matrix.python-version }}-uv-${{ 
-          hashFiles('pyproject.toml') }}
-    - name: Install UV
-      uses: astral-sh/setup-uv@v5
-      with:
-        version: latest
-        python-version: ${{ matrix.python-version }}
-        enable-cache: true
-        cache-dependency-glob: '**/pyproject.toml'
     - name: Install mise
       uses: jdx/mise-action@v3
       with:
@@ -69,19 +56,7 @@ jobs:
         branch: ${{ github.event.pull_request.base.ref }}
         name: coverage-xml
         path: ${{ github.workspace }}/samples/basic/old-coverage
-    - name: UV cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/uv
-        key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ 
-          hashFiles('pyproject.toml') }}
     - run: git fetch origin main
-      working-directory: samples/basic
-    - name: Install UV
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      working-directory: samples/basic
-    - name: Install Python
-      run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v3
@@ -100,18 +75,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: UV cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/uv
-        key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ 
-          hashFiles('pyproject.toml') }}
-    - name: Install UV
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      working-directory: samples/basic
-    - name: Install Python
-      run: uv python install ${{ env.latest-python-version }}
-      working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v3
       with:
@@ -123,37 +86,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: UV cache
-      uses: actions/cache@v4
+    - name: Install mise
+      uses: jdx/mise-action@v3
       with:
-        path: ~/.cache/uv
-        key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ 
-          hashFiles('pyproject.toml') }}
-    - name: Install UV
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      working-directory: samples/basic
-    - name: Install Python
-      run: uv python install ${{ env.latest-python-version }}
-      working-directory: samples/basic
+        version: 2026.2.4
     - name: Check lint
-      run: uv build
+      run: mise run build
       working-directory: samples/basic
   docs-build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: UV cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/uv
-        key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ 
-          hashFiles('pyproject.toml') }}
-    - name: Install UV
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      working-directory: samples/basic
-    - name: Install Python
-      run: uv python install ${{ env.latest-python-version }}
-      working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v3
       with:
@@ -166,15 +109,6 @@ jobs:
     needs: docs-build
     steps:
     - uses: actions/checkout@v4
-    - name: UV cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/uv
-        key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ 
-          hashFiles('pyproject.toml') }}
-    - name: Install UV
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      working-directory: samples/basic
     - name: Install mise
       uses: jdx/mise-action@v3
       with:
