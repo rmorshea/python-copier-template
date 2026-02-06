@@ -33,7 +33,9 @@ jobs:
         enable-cache: true
         cache-dependency-glob: '**/pyproject.toml'
     - name: Install mise
-      uses: jdx/mise-action@v2
+      uses: jdx/mise-action@v3
+      with:
+        version: 2026.2.4
     - name: Run tests
       run: mise run cov
       working-directory: samples/basic
@@ -82,7 +84,9 @@ jobs:
       run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
-      uses: jdx/mise-action@v2
+      uses: jdx/mise-action@v3
+      with:
+        version: 2026.2.4
     - name: Check coverage
       continue-on-error: true
       run: mise run cov --no-test --old-coverage-xml=${{ github.workspace 
@@ -109,7 +113,9 @@ jobs:
       run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
-      uses: jdx/mise-action@v2
+      uses: jdx/mise-action@v3
+      with:
+        version: 2026.2.4
     - name: Check lint
       run: mise run lint --check
       working-directory: samples/basic
@@ -149,7 +155,9 @@ jobs:
       run: uv python install ${{ env.latest-python-version }}
       working-directory: samples/basic
     - name: Install mise
-      uses: jdx/mise-action@v2
+      uses: jdx/mise-action@v3
+      with:
+        version: 2026.2.4
     - name: Build docs
       run: mise run docs:build
       working-directory: samples/basic
@@ -168,7 +176,9 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
       working-directory: samples/basic
     - name: Install mise
-      uses: jdx/mise-action@v2
+      uses: jdx/mise-action@v3
+      with:
+        version: 2026.2.4
     - name: Check changelog
       continue-on-error: true
       run: mise run docs:check-changelog
