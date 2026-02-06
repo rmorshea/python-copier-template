@@ -80,7 +80,7 @@ jobs:
         with:
           version: 2026.2.4
       - name: Check lint
-        run: mise run build
+        run: mise exec -- uv build
   docs-build:
     runs-on: ubuntu-latest
     steps:
