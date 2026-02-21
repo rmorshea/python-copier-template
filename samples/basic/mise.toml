@@ -1,0 +1,127 @@
+[tools]
+uv = "0.10.0"
+
+[tasks.test]
+description = "Run the test suite"
+usage = 'arg "[args]" help="Arguments to pass to pytest" var=#true'
+run = 'uv run pytest -v ${usage_args?}'
+
+[tasks.cov]
+description = "Run the test suite with coverage"
+usage = '''
+flag "--no-test" help="Skip running tests with coverage"
+flag "--old-coverage-xml <file>" help="Path to target coverage.xml"
+'''
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+
+NO_TEST="${usage_no_test:-false}"
+OLD_COVERAGE_XML="${usage_old_coverage_xml:-}"
+IN_CI="${GITHUB_ACTIONS:-}"
+
+if [[ "$NO_TEST" != "true" ]]; then
+  uv run coverage run -m pytest -v || true
+  uv run coverage combine || true
+  uv run coverage report
+  uv run coverage xml
+fi
+
+if [[ -n "$OLD_COVERAGE_XML" ]]; then
+  if [[ -f "$OLD_COVERAGE_XML" ]]; then
+    uv run pycobertura diff "$OLD_COVERAGE_XML" coverage.xml --source1 . --source2 .
+  else
+    echo "Error: Target coverage file $OLD_COVERAGE_XML does not exist" >&2
+    exit 1
+  fi
+elif [[ -z "$IN_CI" ]]; then
+  uv run diff-cover coverage.xml --config-file pyproject.toml
+fi
+"""
+
+[tasks.lint]
+description = "Run all linting checks and fixes"
+usage = '''
+flag "--check" help="Check for linting issues without fixing"
+flag "--no-md-style" help="Skip style check Markdown files"
+flag "--no-py-style" help="Skip style check Python files"
+flag "--no-py-types" help="Skip type check Python files"
+flag "--no-uv-locked" help="Skip check that the UV lock file is synced"
+flag "--no-yml-style" help="Skip style check YAML files"
+'''
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+
+CHECK="${usage_check:-false}"
+NO_UV_LOCKED="${usage_no_uv_locked:-false}"
+NO_PY_STYLE="${usage_no_py_style:-false}"
+NO_MD_STYLE="${usage_no_md_style:-false}"
+NO_YML_STYLE="${usage_no_yml_style:-false}"
+NO_PY_TYPES="${usage_no_py_types:-false}"
+
+[[ "$NO_UV_LOCKED" != "true" ]] && uv lock --locked
+
+if [[ "$NO_PY_STYLE" != "true" ]]; then
+  if [[ "$CHECK" == "true" ]]; then
+    uv run ruff format --check --diff
+    uv run ruff check
+  else
+    uv run ruff format
+    uv run ruff check --fix
+  fi
+fi
+
+if [[ "$NO_MD_STYLE" != "true" ]]; then
+  if [[ "$CHECK" == "true" ]]; then
+    uv run mdformat --ignore-missing-references --check README.md docs
+    uv run doccmd -v --language=python --no-pad-file --command "ruff format --check" docs
+    uv run doccmd -v --language=python --no-pad-file --command "ruff check" docs
+  else
+    uv run mdformat --ignore-missing-references README.md docs
+    uv run doccmd -v --language=python --no-pad-file --command "ruff format" docs
+    uv run doccmd -v --language=python --no-pad-file --command "ruff check --fix" docs
+  fi
+fi
+
+if [[ "$NO_YML_STYLE" != "true" ]]; then
+  if [[ "$CHECK" == "true" ]]; then
+    uv run yamlfix --check docs .github
+  else
+    uv run yamlfix docs .github
+  fi
+fi
+
+[[ "$NO_PY_TYPES" != "true" ]] && uv run pyright
+"""
+
+[tasks."docs:build"]
+description = "Build documentation"
+run = "uv run mkdocs build -f docs/mkdocs.yml"
+
+[tasks."docs:publish"]
+description = "Publish documentation to GitHub Pages"
+run = "uv run mkdocs gh-deploy -f docs/mkdocs.yml"
+
+[tasks."docs:serve"]
+description = "Serve documentation locally"
+run = "uv run mkdocs serve -f docs/mkdocs.yml"
+
+[tasks."docs:check-changelog"]
+description = "Check if the changelog is up to date"
+usage = 'arg "[target_branch]" help="Target branch to compare against" default="main"'
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+
+TARGET_BRANCH="${usage_target_branch?}"
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [[ "$CURRENT_BRANCH" == "$TARGET_BRANCH" ]]; then
+  echo "Already on the target branch, skipping changelog check."
+  exit 0
+fi
+
+git fetch origin "$TARGET_BRANCH"
+git diff --name-only "origin/${TARGET_BRANCH}..HEAD" -- CHANGELOG.md || true
+"""

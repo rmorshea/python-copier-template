@@ -1,5 +1,16 @@
-# ruff: noqa: S607,S603,S404,FBT001,D401,D103
+#!/usr/bin/env -S uv run --script
 
+# [MISE] description="Generate sample projects"
+# [USAGE] flag "-d --diff" help="Check if there's a diff."
+
+# ruff: noqa: E265,S607,S603,S404,FBT001,D401,D103
+
+# /// script
+# dependencies = ["ruamel.yaml==0.19.1", "copier==9.11.3"]
+# ///
+
+
+import os
 import re
 import shutil
 import subprocess
@@ -7,12 +18,11 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable, TypeAlias
 
-import click
 from ruamel.yaml import YAML
 from ruamel.yaml.compat import BytesIO
 
 FILE = Path(__file__)
-HERE = FILE.parent
+HERE = FILE.parent.parent
 ANSWERS_DIR = HERE / "answers"
 SAMPLES_DIR = HERE / "samples"
 
@@ -21,17 +31,14 @@ yaml = YAML()
 GITHUB_WORKSPACE_PATTERN = re.compile(r"\$\{\{ *github\.workspace *\}\}")
 
 
-@click.group()
 def main():
-    """A collection of dev utilities."""
-
-
-@main.command("gen")
-@click.option("--check", is_flag=True, help="Check sample projects.")
-@click.option("--fresh", is_flag=True, help="Delete existing sample projects.")
-@click.option("--diff", is_flag=True, help="Check if there's a diff.")
-def gen(check: bool, fresh: bool, diff: bool):
     """Generate sample projects."""
+
+    # don't want to adopt the current environment in any subsequent commands
+    os.environ["VIRTUAL_ENV"] = ""
+
+    diff = os.environ.get("usage_diff") == "true"
+
     for answers_file in ANSWERS_DIR.glob("*.yml"):
         output_dir = SAMPLES_DIR / answers_file.stem
         shutil.rmtree(output_dir, ignore_errors=True)
@@ -48,8 +55,10 @@ def gen(check: bool, fresh: bool, diff: bool):
             ]
         )
 
-        run(["uv", "run", FILE.name, "lint"], cwd=output_dir)
-        run(["uv", "run", FILE.name, "cov"], cwd=output_dir)
+        run(["mise", "exec", "--", "uv", "lock"], cwd=output_dir)
+        run(["mise", "run", "lint"], cwd=output_dir)
+        run(["mise", "run", "cov"], cwd=output_dir)
+        run(["mise", "run", "docs:build"], cwd=output_dir)
 
         # copy workflow files to .github/workflows
         sample_check_workflow_yml = output_dir / ".github" / "workflows" / "check.yml"
@@ -108,14 +117,18 @@ else:
         cmd, *args = args
         cmd = tuple(map(str, cmd))
         kwargs.setdefault("check", True)
-        click.echo(click.style(" ".join(cmd), bold=True))
+        print("\033[1m" + " ".join(cmd) + "\033[0m")  # Bold text
         try:
             return subprocess.run(cmd, *args, **kwargs)
         except subprocess.CalledProcessError as e:
-            raise click.ClickException(e) from None
+            print(
+                f"Error: Command failed with exit code {e.returncode}",
+                file=__import__("sys").stderr,
+            )
+            raise SystemExit(1) from None
         except FileNotFoundError as e:
-            msg = f"File not found {e}"
-            raise click.ClickException(msg) from None
+            print(f"Error: File not found {e}", file=__import__("sys").stderr)
+            raise SystemExit(1) from None
 
 
 if __name__ == "__main__":
