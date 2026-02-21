@@ -3,13 +3,24 @@ uv = "0.10.0"
 
 [tasks.test]
 description = "Run the test suite"
-usage = 'arg "[args]" help="Arguments to pass to pytest" var=#true'
+run = [
+  "mise run test:python"
+]
+
+[tasks."test:python"]
+description = "Run the Python test suite"
+usage = 'arg "[args]" default="." help="Arguments to pass to pytest" var=#true'
 run = 'uv run pytest -v ${usage_args?}'
 
 [tasks.cov]
 description = "Run the test suite with coverage"
+run = [
+  "mise run cov:python"
+]
+
+[tasks."cov:python"]
 usage = '''
-flag "--no-test" help="Skip running tests with coverage"
+flag "--no-test" help="Skip running tests and just report coverage"
 flag "--old-coverage-xml <file>" help="Path to target coverage.xml"
 '''
 run = """
@@ -41,6 +52,15 @@ fi
 
 [tasks.lint]
 description = "Run all linting checks and fixes"
+usage = '''
+flag "--check" help="Check for linting issues without fixing"
+'''
+run = [
+  "mise run lint:python",
+]
+
+[tasks."lint:python"]
+description = "Run Pyton linting checks and fixes"
 usage = '''
 flag "--check" help="Check for linting issues without fixing"
 flag "--no-md-style" help="Skip style check Markdown files"
