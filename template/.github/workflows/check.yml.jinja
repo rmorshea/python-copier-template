@@ -20,7 +20,7 @@ jobs:
         with:
           version: 2026.2.4
       - name: Run tests
-        run: mise run cov
+        run: mise run cov:python
       - name: Upload coverage
         if: matrix.python-version == env.latest-python-version
         uses: actions/upload-artifact@v4
@@ -61,7 +61,7 @@ jobs:
         {% if this.testing -%}
         continue-on-error: true
         {% endif -%}
-        run: {{ "mise run cov --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml" }}
+        run: {{ "mise run cov:python --no-test --old-coverage-xml=${{ github.workspace }}/old-coverage/coverage.xml" }}
       - name: Coverage summary
         {% if this.testing -%}
         continue-on-error: true
@@ -76,7 +76,7 @@ jobs:
         with:
           version: 2026.2.4
       - name: Check lint
-        run: {% if this.testing %}usage_no_uv_locked=true{% endif %} mise run lint --check
+        run: {% if this.testing %}usage_no_uv_locked=true{% endif %} mise run lint:python --check
   py-build:
     runs-on: ubuntu-latest
     steps:
