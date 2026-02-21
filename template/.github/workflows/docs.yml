@@ -10,17 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: UV cache
-        uses: actions/cache@v4
+      - name: Install mise
+        uses: jdx/mise-action@v3
         with:
-          path: ~/.cache/uv
-          key: ${{ runner.os }}-${{ env.latest-python-version }}-uv-${{ hashFiles('pyproject.toml') }}
-      - name: Install UV
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - name: Install Python
-        run: uv python install ${{ matrix.python-version }}
+          version: 2026.2.4
       - name: Build docs
-        run: uv run dev.py docs build
+        run: mise run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
