@@ -70,7 +70,7 @@ jobs:
         with:
           version: 2026.2.4
       - name: Check lint
-        run: mise run lint --check --no-uv-locked
+        run: usage_no_uv_locked=true mise run lint --check
   py-build:
     runs-on: ubuntu-latest
     steps:

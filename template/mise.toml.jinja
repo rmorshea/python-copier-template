@@ -3,7 +3,9 @@ uv = "0.10.0"
 
 [tasks.test]
 description = "Run the test suite"
-depends = ["test:python"]
+run = [
+  "mise run test:python"
+]
 
 [tasks."test:python"]
 description = "Run the Python test suite"
@@ -12,7 +14,9 @@ run = 'uv run pytest -v ${usage_args?}'
 
 [tasks.cov]
 description = "Run the test suite with coverage"
-depends = ["cov:python"]
+run = [
+  "mise run cov:python"
+]
 
 [tasks."cov:python"]
 usage = '''
@@ -48,7 +52,12 @@ fi
 
 [tasks.lint]
 description = "Run all linting checks and fixes"
-depends = ["lint:python"]
+usage = '''
+flag "--check" help="Check for linting issues without fixing"
+'''
+run = [
+  "mise run lint:python",
+]
 
 [tasks."lint:python"]
 description = "Run Pyton linting checks and fixes"
