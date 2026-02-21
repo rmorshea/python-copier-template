@@ -58,6 +58,7 @@ def main():
         run(["mise", "exec", "--", "uv", "lock"], cwd=output_dir)
         run(["mise", "run", "lint"], cwd=output_dir)
         run(["mise", "run", "cov"], cwd=output_dir)
+        run(["mise", "run", "docs:build"], cwd=output_dir)
 
         # copy workflow files to .github/workflows
         sample_check_workflow_yml = output_dir / ".github" / "workflows" / "check.yml"

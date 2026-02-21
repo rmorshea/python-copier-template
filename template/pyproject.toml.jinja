@@ -1,11 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.sdist]
-include = ["src/{{ python_package_name }}", "docs"]
-[tool.hatch.build.targets.wheel]
-packages = ["src/{{ python_package_name }}"]
+requires = ["uv_build>=0.10.3,<0.11.0"]
+build-backend = "uv_build"
 
 [project]
 name = "{{ python_package_name }}"
@@ -70,6 +65,8 @@ test = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+python_files = ["test_*.py", "*_test.py", "test/*.py", "tests/**/*.py", "test.py"]
+filterwarnings = ["error"]
 
 [tool.ruff]
 line-length = 100
@@ -124,7 +121,8 @@ force-single-line = true
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = [
+"{*_test.py,conftest.py,**/test/*.py,test.py}" = [
+    "ARG001",  # Unused argument (pytest fixtures)
     "PLC2701", # Private imports
     "RUF029",  # Async functions without await
     "S101",    # Assert statements
@@ -159,7 +157,7 @@ branch = true
 omit = []
 
 [tool.coverage.paths]
-{{ python_package_name }} = ["src"]
+{{ python_package_name }} = ["python"]
 tests = ["tests"]
 
 [tool.coverage.report]
@@ -180,3 +178,8 @@ sort = "Name"
 compare_branch = "origin/main"
 fail_under = 100
 include_untracked = true
+
+[tool.uv.build-backend]
+module-name = "{{ python_package_name }}"
+module-root = "python"
+source-exclude = ["test", "tests", "conftest.py", "*_test.py", "test_*.py"]

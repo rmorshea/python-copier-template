@@ -12,7 +12,7 @@ nav = Nav()
 mod_symbol = '<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code>'
 
 root = Path(__file__).parent.parent
-src = root / "src"
+src = root / "python"
 
 for path in sorted(src.rglob("*.py")):
     module_path = path.relative_to(src).with_suffix("")
