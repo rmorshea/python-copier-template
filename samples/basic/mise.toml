@@ -145,3 +145,12 @@ fi
 git fetch origin "$TARGET_BRANCH"
 git diff --name-only "origin/${TARGET_BRANCH}..HEAD" -- CHANGELOG.md || true
 """
+
+[tasks."build:python"]
+description = "Build the Python package"
+run = "uv build"
+
+[tasks."release:python"]
+description = "Release the Python package"
+depends = ["build:python"]
+run = "uv publish"
